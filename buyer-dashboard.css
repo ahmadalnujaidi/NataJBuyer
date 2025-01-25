@@ -779,7 +779,8 @@
 .main {
   position: absolute;
   top: 158px;
-  left: 36px;
+  left: 50%;
+  transform: translateX(-50%);
   box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.06);
   border-radius: var(--br-mini);
   background-color: var(--white-white);
