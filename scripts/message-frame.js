@@ -5,6 +5,13 @@ window.addEventListener("DOMContentLoaded", function () {
   const orderId = params.get("id");
 
   if (orderId) {
+    const last12Digits = orderId.slice(-12);
+    const orderNoHeader = document.getElementById("orderNoHeader");
+
+    if (orderNoHeader) {
+      orderNoHeader.textContent = `Order No. #${last12Digits}`;
+    }
+
     // Fetch existing messages
     fetch(`http://localhost:3000/orders/${orderId}/chat`)
       .then((response) => response.json())
@@ -13,6 +20,14 @@ window.addEventListener("DOMContentLoaded", function () {
         messages.forEach((message) => {
           const bubble = document.createElement("div");
           bubble.classList.add("message-bubble");
+
+          // Add class based on sender
+          if (message.sender === "buyer") {
+            bubble.classList.add("sender");
+          } else if (message.sender === "seller") {
+            bubble.classList.add("receiver");
+          }
+
           bubble.textContent = message.content; // Adjust based on message structure
           messageContainer.appendChild(bubble);
         });
@@ -41,10 +56,12 @@ window.addEventListener("DOMContentLoaded", function () {
               const messageContainer =
                 document.querySelector(".message-bubbles");
               const bubble = document.createElement("div");
-              bubble.classList.add("message-bubble");
+              bubble.classList.add("message-bubble", "sender"); // Buyer is sender
               bubble.textContent = message.content; // Adjust based on message structure
               messageContainer.appendChild(bubble);
               inputField.value = ""; // Clear input field
+              // Optionally scroll to the latest message
+              messageContainer.scrollTop = messageContainer.scrollHeight;
             })
             .catch((error) => {
               console.error("Error sending message:", error);

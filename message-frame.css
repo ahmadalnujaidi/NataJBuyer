@@ -1,5 +1,12 @@
 /* ...existing code... */
 
+/* Set html and body to full height */
+html,
+body {
+  height: 100%;
+  margin: 0; /* Ensure no default margins interfere */
+}
+
 header {
   background-color: #f0f0f0;
   padding: 15px;
@@ -15,23 +22,55 @@ hr {
   margin: 0;
 }
 
+/* Set body to use flex layout */
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0; /* Ensure no default margins interfere */
+}
+
+/* Make message-bubbles take available space and enable scrolling */
 .message-bubbles {
-  padding: 10px;
-  height: 300px;
+  flex: 1;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  /* Remove fixed height */
+  /* height: 300px; */
   background-color: #fafafa;
 }
 
 /* Styles for individual message bubbles */
 .message-bubble {
-  background-color: #e0e0e0;
+  max-width: 60%;
   padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  max-width: 80%;
+  border-radius: 10px;
+  word-wrap: break-word;
+}
+
+/* Optional: Differentiate sender and receiver */
+.message-bubble.sender {
+  align-self: flex-end;
+  background-color: #6941c6; /* Updated color */
+  color: white;
+}
+
+.message-bubble.receiver {
+  align-self: flex-start;
+  background-color: #e0e0e0;
+  color: black;
+}
+
+/* Optional: Add margin for better spacing */
+.message-bubble + .message-bubble {
+  margin-top: 5px;
 }
 
 .input-area {
+  flex-shrink: 0;
   display: flex;
   padding: 10px;
   border-top: 1px solid #ccc;

@@ -4,15 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./message-frame.css" />
   </head>
   <body>
-    <!-- Add header -->
-    <header>Order No. 8392791726291</header>
+    <!-- Add header with ID for dynamic Order No. -->
+    <header id="orderNoHeader">Order No. 8392791726291</header>
     <!-- Add horizontal line -->
     <hr />
     <!-- Add message bubbles container -->
     <div class="message-bubbles">
-      <!-- ...existing code... -->
+      <!-- Fetched messages will appear here -->
+      <!-- Example:
+      <div class="message-bubble sender">Hello!</div>
+      <div class="message-bubble receiver">Hi there!</div>
+      -->
     </div>
     <!-- Add input field and send button -->
     <div class="input-area">
