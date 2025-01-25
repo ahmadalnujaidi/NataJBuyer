@@ -1,0 +1,14 @@
+{
+  "locofyConfig": {
+    "project": "Nataj MVP",
+    "id": "2s4H1WKLo0cCXbAhXYWFr8Qfmm1",
+    "framework": "html-css",
+    "typescript": false,
+    "styling": "CSS",
+    "unit": "px",
+    "naming": "Kebab Case",
+    "path": "public/",
+    "componentsPath": "c:\\Users\\a\\Desktop\\NatajBuyer\\src\\components",
+    "screensPath": "c:\\Users\\a\\Desktop\\NatajBuyer\\src\\pages"
+  }
+}
