@@ -10,5 +10,6 @@
     "path": "public/",
     "componentsPath": "c:\\Users\\a\\Desktop\\NatajBuyer\\src\\components",
     "screensPath": "c:\\Users\\a\\Desktop\\NatajBuyer\\src\\pages"
-  }
+  },
+  "liveServer.settings.port": 5501
 }
