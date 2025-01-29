@@ -3,7 +3,7 @@
 document.getElementById("trackButton").addEventListener("click", function () {
   const orderNumber = document.getElementById("orderNumberInput").value.trim();
   if (orderNumber !== "") {
-    fetch(`http://localhost:3000/orders/${orderNumber}`)
+    fetch(`https://natajbackend.onrender.com/orders/${orderNumber}`)
       .then((response) => {
         if (response.ok) {
           window.location.href = `buyer-dashboard.html?id=${orderNumber}`;

@@ -185,7 +185,7 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   if (orderId) {
-    fetch(`http://localhost:3000/orders/${orderId}`)
+    fetch(`https://natajbackend.onrender.com/orders/${orderId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -193,7 +193,9 @@ window.addEventListener("DOMContentLoaded", function () {
         updateOrderNumber(data);
         updatePlacedDate(data);
         // Fetch status updates
-        fetch(`http://localhost:3000/orders/${orderId}/status-updates`)
+        fetch(
+          `https://natajbackend.onrender.com/orders/${orderId}/status-updates`
+        )
           .then((response) => response.json())
           .then((statusData) => {
             console.log(statusData);

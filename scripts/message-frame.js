@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     // Fetch existing messages
-    fetch(`http://localhost:3000/orders/${orderId}/chat`)
+    fetch(`https://natajbackend.onrender.com/orders/${orderId}/chat`)
       .then((response) => response.json())
       .then((messages) => {
         const messageContainer = document.querySelector(".message-bubbles");
@@ -44,7 +44,7 @@ window.addEventListener("DOMContentLoaded", function () {
       sendButton.addEventListener("click", function () {
         const content = inputField.value.trim();
         if (content !== "") {
-          fetch(`http://localhost:3000/orders/${orderId}/chat`, {
+          fetch(`https://natajbackend.onrender.com/orders/${orderId}/chat`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
