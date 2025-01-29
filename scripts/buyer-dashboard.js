@@ -44,17 +44,124 @@ window.addEventListener("DOMContentLoaded", function () {
       );
 
       // Set all previous dots to green (completed)
-      for (let i = statusStepArray.length; i >= index - 1; i--) {
+      for (let i = statusStepArray.length; i >= index; i--) {
         if (dots[i]) {
           dots[i].style.backgroundColor = "var(--color-forestgreen)";
         }
       }
 
       // Set the current step (index - 1) to purple
-      if (dots[index - 1]) {
-        dots[index - 1].style.backgroundColor = "var(--color-slateblue-100)";
+      if (dots[index]) {
+        dots[index].style.backgroundColor = "var(--color-slateblue-100)";
       }
     }
+  }
+
+  function formatDate(date) {
+    if (!date) return { date: "00 abc 0000", time: "0:00 AM" };
+    const d = new Date(date);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const dateStr = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    const timeStr = d.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    return { date: dateStr, time: timeStr };
+  }
+
+  function updateDateElements(statusData) {
+    const dateElements = Array.from(
+      document.querySelectorAll(
+        ".date-values, .date-components8, .date-components9, .order-date"
+      )
+    ).reverse(); // Reverse the array of elements
+
+    // Set default values for all date elements
+    dateElements.forEach((element) => {
+      const dateDiv = element.querySelector(".apr-2025") || element;
+      const timeDiv =
+        element.querySelector(".am") || element.querySelector(".am10");
+      if (dateDiv) dateDiv.textContent = "00 abc 0000";
+      if (timeDiv) timeDiv.textContent = "0:00 AM";
+    });
+
+    // Sort status data by timestamp in ascending order
+    const sortedStatusData = [...statusData].sort(
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+    );
+
+    // Update with actual timestamps
+    sortedStatusData.forEach((status, index) => {
+      if (index < dateElements.length) {
+        const element = dateElements[index];
+        const { date, time } = formatDate(status.timestamp);
+        const dateDiv = element.querySelector(".apr-2025") || element;
+        const timeDiv =
+          element.querySelector(".am") || element.querySelector(".am10");
+        if (dateDiv) dateDiv.textContent = date;
+        if (timeDiv) timeDiv.textContent = time;
+      }
+    });
+  }
+
+  function updateStatusAndLocation(statusData) {
+    // First do the existing status dot updates
+    const latestStatus = getLatestStatus(statusData);
+    updateStatusDot(latestStatus.status);
+    updateDateElements(statusData);
+
+    // Update location text for each status
+    const allStatusSteps = document.querySelectorAll(
+      ".delivery-location, .step-labels, .step-labels1, .step-labels2, .step-labels3, .step-labels7, .step-labels8, .step-labels9, .step-labels10, .order-received-location"
+    );
+
+    const statusStepArray = Array.from(allStatusSteps);
+
+    // Reset all location texts to default
+    statusStepArray.forEach((step) => {
+      const locationDiv = step.querySelector(".to-saudi-arabia, .at-china-bj9");
+      if (locationDiv) {
+        locationDiv.textContent = "Location: ...";
+      }
+    });
+
+    // Update locations from status data
+    statusData.forEach((status) => {
+      const matchingStep = statusStepArray.find((step) => {
+        const statusText = step.querySelector(
+          ".delivered, .packaging, .initial-loading, .order-received"
+        );
+        return (
+          statusText &&
+          statusText.textContent
+            .toLowerCase()
+            .includes(status.status.toLowerCase())
+        );
+      });
+
+      if (matchingStep) {
+        const locationDiv = matchingStep.querySelector(
+          ".to-saudi-arabia, .at-china-bj9"
+        );
+        if (locationDiv) {
+          locationDiv.textContent = status.location || "Location: ...";
+        }
+      }
+    });
   }
 
   if (orderId) {
@@ -67,8 +174,7 @@ window.addEventListener("DOMContentLoaded", function () {
           .then((response) => response.json())
           .then((statusData) => {
             console.log(statusData);
-            const latestStatus = getLatestStatus(statusData);
-            updateStatusDot(latestStatus.status);
+            updateStatusAndLocation(statusData);
           })
           .catch((error) => {
             console.error("Error fetching status updates:", error);
