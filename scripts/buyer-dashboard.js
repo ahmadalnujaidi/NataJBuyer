@@ -58,23 +58,14 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function formatDate(date) {
-    if (!date) return { date: "00 abc 0000", time: "0:00 AM" };
+    if (!date) return { date: "00/00/0000", time: "0:00 AM" };
     const d = new Date(date);
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const dateStr = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    // Add 1 to month since getMonth() returns 0-11
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const day = d.getDate().toString().padStart(2, "0");
+    const year = d.getFullYear();
+
+    const dateStr = `${month}/${day}/${year}`;
     const timeStr = d.toLocaleString("en-US", {
       hour: "numeric",
       minute: "2-digit",
@@ -164,11 +155,43 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function updateEstimatedDelivery(deadline) {
+    const estimatedDateElement = document.querySelector(
+      ".estimated-delivery-date"
+    );
+    if (estimatedDateElement && deadline) {
+      const { date, time } = formatDate(deadline);
+      estimatedDateElement.textContent = `Estimated delivery date ${date}`;
+      const timeElement = document.querySelector(".am-100");
+      if (timeElement) {
+        timeElement.textContent = time;
+      }
+    }
+  }
+
+  function updateOrderNumber(orderData) {
+    const orderNumberElement = document.querySelector(".order-no-435478675232");
+    if (orderNumberElement && orderData.id) {
+      orderNumberElement.textContent = `Order No. #${orderData.id}`;
+    }
+  }
+
+  function updatePlacedDate(orderData) {
+    const placedDateElement = document.querySelector(".placed-order-1822025");
+    if (placedDateElement && orderData.placedDate) {
+      const { date } = formatDate(orderData.placedDate);
+      placedDateElement.textContent = `Placed order ${date}`;
+    }
+  }
+
   if (orderId) {
     fetch(`http://localhost:3000/orders/${orderId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        updateEstimatedDelivery(data.deadline);
+        updateOrderNumber(data);
+        updatePlacedDate(data);
         // Fetch status updates
         fetch(`http://localhost:3000/orders/${orderId}/status-updates`)
           .then((response) => response.json())
