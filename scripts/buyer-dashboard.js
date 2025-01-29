@@ -12,25 +12,6 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function getStatusMatch(currentStatus, elementText) {
-    // Define special cases for status matching
-    const statusMappings = {
-      received: "order received",
-      // Add more mappings as needed
-    };
-
-    const normalizedStatus = currentStatus.toLowerCase();
-    const normalizedText = elementText.toLowerCase();
-
-    // Check if there's a special mapping for this status
-    if (statusMappings[normalizedStatus]) {
-      return normalizedText.includes(statusMappings[normalizedStatus]);
-    }
-
-    // Default to regular includes check
-    return normalizedText.includes(normalizedStatus);
-  }
-
   function updateStatusDot(status) {
     // Remove any existing active dots
     const allDots = document.querySelectorAll(
@@ -50,7 +31,10 @@ window.addEventListener("DOMContentLoaded", function () {
       const statusText = step.querySelector(
         ".delivered, .packaging, .initial-loading, .order-received"
       );
-      return statusText && getStatusMatch(status, statusText.textContent);
+      return (
+        statusText &&
+        statusText.textContent.toLowerCase().includes(status.toLowerCase())
+      );
     });
 
     if (statusStep) {
